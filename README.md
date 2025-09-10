@@ -32,9 +32,25 @@ GitAuthManager eliminates the complexity of managing Git credentials through com
 
 ### Alternative: Build from Source
 For developers who want to build from source:
+
+**Prerequisites:**
+- macOS 10.15 or later
+- Xcode Command Line Tools installed
+- Git installed on your system
+
+**Build Steps:**
 1. Clone this repository: `git clone https://github.com/yourusername/GitAuthManager.git`
-2. Open `GitAuthManager.xcodeproj` in Xcode
-3. Build and run the project (⌘+R)
+2. Navigate to the project directory: `cd GitAuthManager`
+3. Build the application: `swift build -c release`
+4. Create the app bundle: `./build.sh`
+5. Run the app: `open GitAuthManager.app`
+
+**Quick Build and Run:**
+```bash
+git clone https://github.com/yourusername/GitAuthManager.git
+cd GitAuthManager
+./build.sh --run
+```
 
 ### Getting Started
 1. Launch GitAuthManager
@@ -58,6 +74,30 @@ For developers who want to build from source:
 - **Security**: macOS Keychain Services for credential storage
 - **Architecture**: MVVM pattern with ObservableObject for state management
 - **Compatibility**: Native macOS application with system integration
+- **Build System**: Swift Package Manager with custom build script
+- **Validation**: Real-time input validation with comprehensive error handling
+- **Features**: Multi-account support, connection testing, configuration export/import
+
+## 📁 Project Structure
+
+```
+GitAuthManager/
+├── Sources/
+│   ├── main.swift                 # App entry point
+│   ├── ContentView.swift          # Main navigation and layout
+│   ├── AuthenticationView.swift   # Authentication form and token management
+│   ├── StatusView.swift          # Real-time status monitoring
+│   ├── SettingsView.swift        # Settings and configuration management
+│   ├── HelpView.swift            # Comprehensive help system
+│   ├── AuthenticationManager.swift # Core business logic and state management
+│   ├── KeychainService.swift     # Secure credential storage
+│   ├── GitService.swift          # Git integration and connection testing
+│   └── Extensions.swift          # Utility extensions and helpers
+├── Package.swift                 # Swift Package Manager configuration
+├── Info.plist                   # macOS app configuration
+├── build.sh                     # Build and packaging script
+└── README.md                    # This file
+```
 
 ## 🤝 Contributing
 
