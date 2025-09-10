@@ -1,4 +1,12 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+import SwiftUI
 
-print("Hello, world!")
+@main
+struct GitAuthManagerApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .frame(minWidth: 600, minHeight: 400)
+        }
+        .windowStyle(.hiddenTitleBar)
+    }
+}
