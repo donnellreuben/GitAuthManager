@@ -9,6 +9,7 @@ class AuthenticationManager: ObservableObject {
     @Published var connectionStatus: ConnectionStatus = .unknown
     @Published var isLoading: Bool = false
     @Published var errorMessage: String = ""
+    @Published var validationErrors: [ValidationError] = []
     
     private let keychainService = KeychainService()
     private let gitService = GitService()
@@ -30,9 +31,39 @@ class AuthenticationManager: ObservableObject {
         keychainService.saveToken(token)
     }
     
+    func validateInputs() -> Bool {
+        validationErrors.removeAll()
+        
+        if username.isEmpty {
+            validationErrors.append(.usernameRequired)
+        } else if !username.isValidGitHubUsername {
+            validationErrors.append(.invalidUsername)
+        }
+        
+        if email.isEmpty {
+            validationErrors.append(.emailRequired)
+        } else if !email.isValidEmail {
+            validationErrors.append(.invalidEmail)
+        }
+        
+        if token.isEmpty {
+            validationErrors.append(.tokenRequired)
+        } else if !token.isValidToken {
+            validationErrors.append(.invalidToken)
+        }
+        
+        return validationErrors.isEmpty
+    }
+    
     func testConnection() {
+        guard validateInputs() else {
+            errorMessage = "Please fix the validation errors below"
+            return
+        }
+        
         isLoading = true
         errorMessage = ""
+        connectionStatus = .testing
         
         gitService.testConnection(username: username, email: email, token: token) { [weak self] result in
             DispatchQueue.main.async {
@@ -114,6 +145,32 @@ enum ConnectionStatus {
             return .red
         case .testing:
             return .orange
+        }
+    }
+}
+
+enum ValidationError: LocalizedError {
+    case usernameRequired
+    case invalidUsername
+    case emailRequired
+    case invalidEmail
+    case tokenRequired
+    case invalidToken
+    
+    var errorDescription: String? {
+        switch self {
+        case .usernameRequired:
+            return "Username is required"
+        case .invalidUsername:
+            return "Invalid GitHub username format"
+        case .emailRequired:
+            return "Email is required"
+        case .invalidEmail:
+            return "Invalid email format"
+        case .tokenRequired:
+            return "Personal access token is required"
+        case .invalidToken:
+            return "Invalid token format"
         }
     }
 }

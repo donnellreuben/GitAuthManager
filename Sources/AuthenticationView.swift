@@ -31,6 +31,21 @@ struct AuthenticationView: View {
                         .font(.headline)
                     TextField("Enter your GitHub username", text: $authManager.username)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(authManager.validationErrors.contains(.usernameRequired) || 
+                                       authManager.validationErrors.contains(.invalidUsername) ? Color.red : Color.clear, lineWidth: 1)
+                        )
+                    
+                    if authManager.validationErrors.contains(.usernameRequired) {
+                        Text("Username is required")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    } else if authManager.validationErrors.contains(.invalidUsername) {
+                        Text("Invalid GitHub username format")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
                 }
                 
                 // Email Field
@@ -39,6 +54,21 @@ struct AuthenticationView: View {
                         .font(.headline)
                     TextField("Enter your email address", text: $authManager.email)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(authManager.validationErrors.contains(.emailRequired) || 
+                                       authManager.validationErrors.contains(.invalidEmail) ? Color.red : Color.clear, lineWidth: 1)
+                        )
+                    
+                    if authManager.validationErrors.contains(.emailRequired) {
+                        Text("Email is required")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    } else if authManager.validationErrors.contains(.invalidEmail) {
+                        Text("Invalid email format")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
                 }
                 
                 // Token Field
@@ -56,6 +86,21 @@ struct AuthenticationView: View {
                     
                     SecureField("Enter your personal access token", text: $authManager.token)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(authManager.validationErrors.contains(.tokenRequired) || 
+                                       authManager.validationErrors.contains(.invalidToken) ? Color.red : Color.clear, lineWidth: 1)
+                        )
+                    
+                    if authManager.validationErrors.contains(.tokenRequired) {
+                        Text("Token is required")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    } else if authManager.validationErrors.contains(.invalidToken) {
+                        Text("Invalid token format")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
                 }
             }
             .padding(.horizontal)
